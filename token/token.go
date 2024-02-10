@@ -1,47 +1,92 @@
 package token
 
 const (
-	ILLEGAL = "ILLEGAL"
-	EOF     = "EOF"
+	ILLEGAL TokenType = iota
+	EOF
 
-	IDENT  = "IDENT"
-	INT    = "INT"
-	STRING = "STRING"
+	IDENT
+	INT
+	STRING
 
-	ASSIGN   = "="
-	PLUS     = "+"
-	MINUS    = "-"
-	BANG     = "!"
-	ASTERISK = "*"
-	SLASH    = "/"
+	ASSIGN
+	PLUS
+	MINUS
+	BANG
+	ASTERISK
+	SLASH
 
-	EQ     = "=="
-	NOT_EQ = "!="
+	EQ
+	NOT_EQ
 
-	LT = "<"
-	GT = ">"
+	LT
+	GT
 
-	COMMA     = ","
-	COLON     = ":"
-	SEMICOLON = ";"
+	COMMA
+	COLON
+	SEMICOLON
 
-	LPAREN   = "("
-	RPAREN   = ")"
-	LBRACE   = "{"
-	RBRACE   = "}"
-	LBRACKET = "["
-	RBRACKET = "]"
+	LPAREN
+	RPAREN
+	LBRACE
+	RBRACE
+	LBRACKET
+	RBRACKET
 
-	FUNCTION = "fn"
-	LET      = "let"
-	TRUE     = "true"
-	FALSE    = "false"
-	IF       = "if"
-	ELSE     = "else"
-	RETURN   = "return"
+	FUNCTION
+	LET
+	TRUE
+	FALSE
+	IF
+	ELSE
+	RETURN
 )
 
-type TokenType string
+var tokenFriendlyNames = map[TokenType]string{
+	ILLEGAL: "ILLEGAL",
+	EOF:     "EOF",
+
+	IDENT:  "IDENT",
+	INT:    "INT",
+	STRING: "STRING",
+
+	ASSIGN:   "=",
+	PLUS:     "+",
+	MINUS:    "-",
+	BANG:     "!",
+	ASTERISK: "*",
+	SLASH:    "/",
+
+	EQ:     "==",
+	NOT_EQ: "!=",
+
+	LT: "<",
+	GT: ">",
+
+	COMMA:     ",",
+	COLON:     ":",
+	SEMICOLON: ";",
+
+	LPAREN:   "(",
+	RPAREN:   ")",
+	LBRACE:   "{",
+	RBRACE:   "}",
+	LBRACKET: "[",
+	RBRACKET: "]",
+
+	FUNCTION: "fn",
+	LET:      "let",
+	TRUE:     "true",
+	FALSE:    "false",
+	IF:       "if",
+	ELSE:     "else",
+	RETURN:   "return",
+}
+
+type TokenType byte
+
+func (tt *TokenType) String() string {
+	return tokenFriendlyNames[*tt]
+}
 
 var keywords = map[string]TokenType{
 	"fn":     FUNCTION,

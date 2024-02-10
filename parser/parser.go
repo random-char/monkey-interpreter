@@ -496,16 +496,16 @@ func (p *Parser) currentPresedence() int {
 }
 
 func (p *Parser) peekError(t token.TokenType) {
-	msg := fmt.Sprintf("Expected next token to be %s, got %s", t, p.peekToken.Type)
+	msg := fmt.Sprintf("Expected next token to be %s, got %s", t.String(), p.peekToken.Type.String())
 	p.errors = append(p.errors, msg)
 }
 
 func (p *Parser) noPrefixParseFnError(t token.TokenType) {
-	msg := fmt.Sprintf("no prefix parse function for %s found", t)
+	msg := fmt.Sprintf("no prefix parse function for %s found", t.String())
 	p.errors = append(p.errors, msg)
 }
 
 func (p *Parser) noInfixParseFnError(t token.TokenType) {
-	msg := fmt.Sprintf("no infix parse function for %s found", t)
+	msg := fmt.Sprintf("no infix parse function for %s found", t.String())
 	p.errors = append(p.errors, msg)
 }
