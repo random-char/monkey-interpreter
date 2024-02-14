@@ -56,6 +56,8 @@ if (5 < 10) {
 "foo bar"
 [1, 2];
 {"foo": "bar"}
+true || false
+true && false
 `
 	// "hello \"world\""
 
@@ -146,6 +148,12 @@ if (5 < 10) {
 		{token.COLON, ":"},
 		{token.STRING, "bar"},
 		{token.RBRACE, "}"},
+		{token.TRUE, "true"},
+		{token.OR, "||"},
+		{token.FALSE, "false"},
+		{token.TRUE, "true"},
+		{token.AND, "&&"},
+		{token.FALSE, "false"},
 		// {token.STRING, "hello \"world\""},
 		{token.EOF, ""},
 	}
@@ -162,7 +170,7 @@ func checkTests(l *Lexer, tests []nextTokenTest) error {
 
 		if tok.Type != tt.expectedType {
 			return fmt.Errorf("tests[%d] - tokentype wrong. expected=%q, got=%q",
-				i, tt.expectedType, tok.Type)
+				i, tt.expectedType.String(), tok.Type.String())
 		}
 
 		if tok.Literal != tt.expectedLiteral {

@@ -18,6 +18,9 @@ const (
 	EQ
 	NOT_EQ
 
+	AND
+	OR
+
 	LT
 	GT
 
@@ -58,6 +61,9 @@ var tokenFriendlyNames = map[TokenType]string{
 
 	EQ:     "==",
 	NOT_EQ: "!=",
+
+	AND: "&&",
+	OR:  "||",
 
 	LT: "<",
 	GT: ">",

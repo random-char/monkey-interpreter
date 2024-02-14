@@ -58,6 +58,12 @@ func TestEvalBooleanExpression(t *testing.T) {
 		{"(1 < 2) == false", false},
 		{"(1 > 2) == true", false},
 		{"(1 > 2) == false", true},
+		{"false || true", true},
+		{"true || false", true},
+		{"false && true", false},
+		{"true && false", false},
+		{"false && qwe()", false},
+		{"true || qwe()", true},
 	}
 	for _, tt := range tests {
 		evaluated := testEval(tt.input)
@@ -178,12 +184,24 @@ if (10 > 1) {
 			"identifier not found: foobar",
 		},
 		{
+			"true && foobar",
+			"identifier not found: foobar",
+		},
+		{
 			`"Hello" - "World"`,
 			"unknown operator: STRING - STRING",
 		},
 		{
 			`{"name": "Monkey"}[fn(x) { x }];`,
 			"unusable as hash key: FUNCTION",
+		},
+		{
+			"5 && true;",
+			"type mismatch: INTEGER && BOOLEAN",
+		},
+		{
+			`"qwe" || false;`,
+			"type mismatch: STRING || BOOLEAN",
 		},
 	}
 

@@ -50,6 +50,10 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 			return left
 		}
 
+		if canShortcurcuit(left, node.Operator) {
+			return left
+		}
+
 		right := Eval(node.Right, env)
 		if isError(right) {
 			return right
@@ -218,6 +222,10 @@ func evalInfixExpression(operator string, left, right object.Object) object.Obje
 		return nativeBoolToBooleanObject(left == right)
 	case operator == "!=":
 		return nativeBoolToBooleanObject(left != right)
+	case operator == "&&":
+		return evalBooleanLogicalExpression(operator, left, right)
+	case operator == "||":
+		return evalBooleanLogicalExpression(operator, left, right)
 	default:
 		return newError("unknown operator: %s %s %s", left.Type(), operator, right.Type())
 	}
@@ -356,6 +364,20 @@ func evalHashIndexExpression(left, index object.Object) object.Object {
 	return pair.Value
 }
 
+func evalBooleanLogicalExpression(operator string, left, right object.Object) object.Object {
+	leftBool := left.(*object.Boolean)
+	rightBool := right.(*object.Boolean)
+
+	switch operator {
+	case "&&":
+		return nativeBoolToBooleanObject(leftBool.Value && rightBool.Value)
+	case "||":
+		return nativeBoolToBooleanObject(leftBool.Value || rightBool.Value)
+	default:
+		return newError("unknown operator: %s %s %s", left.Type(), operator, right.Type())
+	}
+}
+
 func applyFunction(fn object.Object, args []object.Object) object.Object {
 	switch fn := fn.(type) {
 	case *object.Function:
@@ -408,6 +430,15 @@ func nativeBoolToBooleanObject(b bool) *object.Boolean {
 	} else {
 		return FALSE
 	}
+}
+
+func canShortcurcuit(left object.Object, operator string) bool {
+	leftBool, ok := left.(*object.Boolean)
+	if !ok {
+		return false
+	}
+
+	return (operator == "&&" && !leftBool.Value) || (operator == "||" && leftBool.Value)
 }
 
 func newError(format string, a ...interface{}) *object.Error {
