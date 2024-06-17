@@ -59,8 +59,8 @@ if (5 < 10) {
 true || false
 true && false
 `
-	// "hello \"world\""
 
+	// "hello \"world\""
 	tests := []nextTokenTest{
 		{token.LET, "let"},
 		{token.IDENT, "five"},
@@ -137,6 +137,7 @@ true && false
 		{token.SEMICOLON, ";"},
 		{token.STRING, "foobar"},
 		{token.STRING, "foo bar"},
+		// {token.STRING, "hello \"world\""},
 		{token.LBRACKET, "["},
 		{token.INT, "1"},
 		{token.COMMA, ","},
@@ -154,7 +155,6 @@ true && false
 		{token.TRUE, "true"},
 		{token.AND, "&&"},
 		{token.FALSE, "false"},
-		// {token.STRING, "hello \"world\""},
 		{token.EOF, ""},
 	}
 
